@@ -14,3 +14,10 @@ func GetPage(context *gin.Context) int {
 	}
 	return result
 }
+
+func Response(context *gin.Context, data interface{}, code int, message string) {
+	context.JSON(code, gin.H{
+		"message": message,
+		"data": data,
+	})
+}

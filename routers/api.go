@@ -2,6 +2,7 @@ package routers
 
 import (
 	"gin-blog/app/http/controllers"
+	"gin-blog/app/http/middlewares"
 	"gin-blog/pkg/settings"
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,12 @@ func InitRouter() *gin.Engine {
 		})
 	})
 
+	authController := controllers.AuthController{}
+
 	api := router.Group("/api")
+	api.POST("/login", authController.Login)
+	jwt := middlewares.Jwt{}
+	api.Use(jwt.Handle())
 	{
 		tag := api.Group("/tags")
 		{

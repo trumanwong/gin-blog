@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
+	"time"
 )
 
 var db *gorm.DB
@@ -56,8 +57,13 @@ func CloseDB() {
 	defer db.Close()
 }
 
-func (this *Model) Paginate(where interface{}, page int, pageSize int) (data []Model, count int) {
-	db.Model(this).Where(where).Offset(page).Limit(pageSize).Find(&data)
-	db.Model(this).Where(where).Count(&count)
+func (this *Model) BeforeCreate(scope *gorm.Scope) (err error) {
+	err = scope.SetColumn("CreatedAt", time.Now())
+	err = scope.SetColumn("UpdatedAt", time.Now())
+	return
+}
+
+func (this *Model) BeforeUpdate(scope *gorm.Scope) (err error) {
+	err = scope.SetColumn("UpdatedAt", time.Now())
 	return
 }

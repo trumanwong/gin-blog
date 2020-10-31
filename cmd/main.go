@@ -10,7 +10,6 @@ import (
 func main() {
 	router := routers.InitRouter()
 
-	fmt.Println(settings.HTTPPort)
 	server := &http.Server{
 		Addr:              fmt.Sprintf(":%d", settings.HTTPPort),
 		Handler:           router,
